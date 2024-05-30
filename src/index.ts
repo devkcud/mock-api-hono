@@ -51,7 +51,7 @@ app.post("/posts", async function (c) {
       },
     });
 
-    return c.json({ message: "Created" }, 200);
+    return c.json({ message: "Created" }, 201);
   } catch (error) {
     console.error(error);
     return c.json({ message: "Internal Server Error" }, 500);
