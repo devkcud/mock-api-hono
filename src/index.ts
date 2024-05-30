@@ -79,24 +79,33 @@ app.delete("/posts/:id", async function (c) {
   }
 });
 
-app.put("/posts", async function (c) {
+app.put("/posts/:id", async function (c) {
   try {
-    const data = await c.req.json();
-    const { id, title, message, category } = data;
+    const id = Number(c.req.param().id);
 
-    if (!id || !title || !message || !category) {
-      return c.json(
-        { message: "ID, title, message and category are required" },
-        400,
-      );
+    if (isNaN(id)) {
+      return c.json({ message: "Couldn't remove id that isn't a number" }, 400);
+    }
+
+    const data = await c.req.json();
+    const { title, message, category } = data;
+
+    const old = await prisma.post.findFirst({ where: { id } });
+
+    if (!old) {
+      return c.json({ message: "Couldn't find item by id" }, 400);
     }
 
     await prisma.post.update({
       where: { id },
-      data: { title, message, category },
+      data: {
+        title: title ?? old.title,
+        message: message ?? old.message,
+        category: category ?? old.category,
+      },
     });
 
-    return c.json({ message: "Deleted" }, 200);
+    return c.json({ message: "Updated" }, 200);
   } catch (error) {
     console.error(error);
     return c.json({ message: "Internal Server Error" }, 500);
