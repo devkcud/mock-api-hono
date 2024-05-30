@@ -72,7 +72,7 @@ app.delete("/posts/:id", async function (c) {
 
     await prisma.post.delete({ where: { id } });
 
-    return c.json({}, 204)
+    return c.json({}, 200)
   } catch (error) {
     console.error(error);
     return c.json({ message: "Internal Server Error" }, 500);
