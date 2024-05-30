@@ -51,7 +51,7 @@ app.post("/posts", async function (c) {
       },
     });
 
-    return c.status(201)
+    return c.json({}, 201)
   } catch (error) {
     console.error(error);
     return c.json({ message: "Internal Server Error" }, 500);
@@ -72,7 +72,7 @@ app.delete("/posts/:id", async function (c) {
 
     await prisma.post.delete({ where: { id } });
 
-    return c.status(204)
+    return c.json({}, 204)
   } catch (error) {
     console.error(error);
     return c.json({ message: "Internal Server Error" }, 500);
@@ -105,7 +105,7 @@ app.put("/posts/:id", async function (c) {
       },
     });
 
-    return c.status(200)
+    return c.json({}, 200)
   } catch (error) {
     console.error(error);
     return c.json({ message: "Internal Server Error" }, 500);
