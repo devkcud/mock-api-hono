@@ -43,7 +43,7 @@ app.post("/posts", async function (c) {
       );
     }
 
-    const post = await prisma.post.create({
+    await prisma.post.create({
       data: {
         title,
         message,
@@ -51,7 +51,7 @@ app.post("/posts", async function (c) {
       },
     });
 
-    return c.json(post, 200);
+    return c.json({ message: "Created" }, 200);
   } catch (error) {
     console.error(error);
     return c.json({ message: "Internal Server Error" }, 500);
