@@ -60,10 +60,16 @@ app.post("/posts", async function (c) {
 app.delete("/posts", async function (c) {
   try {
     const data = await c.req.json();
-    const { id } = data;
+    let { id } = data;
 
     if (!id) {
       return c.json({ message: "ID is required" }, 400);
+    }
+
+    id = Number(id);
+
+    if (isNaN(id)) {
+      return c.json({ message: "Couldn't remove id that isn't a number" }, 400);
     }
 
     if ((await prisma.post.count({ where: { id } })) === 0) {
