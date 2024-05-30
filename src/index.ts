@@ -6,7 +6,7 @@ import { cors } from "hono/cors";
 const app = new Hono();
 
 app.use(
-  "/posts",
+  "/posts/*",
   cors({
     origin: "*",
     allowMethods: ["GET", "HEAD", "PUT", "POST", "DELETE", "PATCH"],
@@ -57,16 +57,10 @@ app.post("/posts", async function (c) {
   }
 });
 
-app.delete("/posts", async function (c) {
+app.delete("/posts/:id", async function (c) {
   try {
-    const data = await c.req.json();
-    let { id } = data;
-
-    if (!id) {
-      return c.json({ message: "ID is required" }, 400);
-    }
-
-    id = Number(id);
+    const idParam = c.req.param().id
+    const id = Number(idParam);
 
     if (isNaN(id)) {
       return c.json({ message: "Couldn't remove id that isn't a number" }, 400);
