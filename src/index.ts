@@ -22,6 +22,11 @@ app.get("/posts", async function (c) {
 
 app.get("/posts/:id", async function (c) {
   const id = Number(c.req.param().id);
+
+  if (isNaN(id)) {
+    return c.json({ message: "Couldn't remove id that isn't a number" }, 400);
+  }
+
   const posts = await prisma.post.findFirst({ where: { id } });
   return c.json(posts, 200);
 });
@@ -55,8 +60,7 @@ app.post("/posts", async function (c) {
 
 app.delete("/posts/:id", async function (c) {
   try {
-    const idParam = c.req.param().id
-    const id = Number(idParam);
+    const id = Number(c.req.param().id);
 
     if (isNaN(id)) {
       return c.json({ message: "Couldn't remove id that isn't a number" }, 400);
