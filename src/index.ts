@@ -15,10 +15,6 @@ app.use(
 
 const prisma = new PrismaClient();
 
-app.get("/health", function (c) {
-  return c.text("Hello Hono!");
-});
-
 app.get("/posts", async function (c) {
   const posts = await prisma.post.findMany();
   return c.json(posts, 200);
