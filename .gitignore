@@ -29,3 +29,7 @@ lerna-debug.log*
 
 prisma/*
 !prisma/schema.prisma
+
+bun.lockb
+package-lock.json
+yarn.lock
